@@ -7,9 +7,12 @@
   <body class="blurred">
     <header class="header">
       <div class="header-left">
-        <img src="icons/sun.svg" alt="" class="weather-icon large" data-current-icon>
-        <div class="header-current-temp">
-          <span data-current-temp>31</span>&#8451;
+        <div class="city"></div>
+        <div class="current-weather">
+          <img src="icons/sun.svg" alt="" class="weather-icon large" data-current-icon>
+          <div class="header-current-temp">
+            <span data-current-temp>31</span>&#8451;
+          </div>
         </div>
       </div>
       <div class="header-right">
@@ -47,6 +50,10 @@
     <div>32&#8451;</div>
   </div>
  </section>
+
+ <div class="search-wrapper">
+ <input type="search" class="search" data-search placeholder="Search Cities"/><input type="submit" data-set-city class="submit" value="submit">
+ </div>
 
 <table class="hour-section">
   <tbody data-hour-section>

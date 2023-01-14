@@ -2,7 +2,52 @@ import "./style.css"
 import { getWeather } from "./weather"
 import { ICON_MAP } from "./iconMap"
 
-getWeather(23, 113, Intl.DateTimeFormat().resolvedOptions().timeZone).then
+let cityNamePrefix = "Guangzhou"
+const cityInfo = {
+  latitude: 20,
+  longitude: 113,
+  cityName:  "Guangzhou"
+}
+
+const geoApiOtions = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '49ec160365msh7d22e7e92c04b27p1dcceejsn025831e1e74c',
+		'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
+	}
+}
+
+const searchInput = document.querySelector("[data-search]")
+const cityElem = document.querySelector(".city")
+const setCity = document.querySelector("[data-set-city]")
+const GEO_URL = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities?"
+
+
+setCity.addEventListener('click', () => {
+  if(searchInput.value == null) return
+  cityNamePrefix = searchInput.value
+
+  fetch(`${GEO_URL}minPopulation=100000&namePrefix=${cityNamePrefix}`, geoApiOtions)
+  .then(response => response.json())
+  .then(res => {
+    console.log(res)
+      setCityTitle(res.data[0].name)
+      getWeather(res.data[0].latitude, res.data[0].longitude, Intl.DateTimeFormat().resolvedOptions().timeZone).then
+(renderWeather).catch(e =>{
+  console.error(e)
+
+    return
+  })
+  .catch(err => console.error(err));
+  searchInput.value = ""
+})
+ 
+})
+
+
+setCityTitle(cityInfo.cityName)
+
+getWeather(cityInfo.latitude, cityInfo.longitude, Intl.DateTimeFormat().resolvedOptions().timeZone).then
 (renderWeather).catch(e =>{
   console.error(e)
   alert("Error getting weather.")
@@ -68,3 +113,13 @@ function renderHourlyWeather(hourly) {
     hourlySection.append(element)
   })
 }
+
+
+
+ function setCityTitle(cityName){
+	if (cityName == null) {
+		cityElem.textContent = "Guangzhou"
+	}
+	cityElem.textContent = cityName
+}
+
